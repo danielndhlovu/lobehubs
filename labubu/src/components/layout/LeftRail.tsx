@@ -1,19 +1,22 @@
 import { Tooltip, Divider, Badge } from 'antd';
 import { MessageSquare, Compass, Bot, Settings, PanelLeft, Sparkles, Heart } from 'lucide-react';
 
+export type RailItem = 'chat' | 'discover' | 'market' | 'favorites';
+
 interface Props {
-  collapsed: boolean;
+  active: RailItem;
+  onChange: (item: RailItem) => void;
   onToggle: () => void;
 }
 
-const RAIL_ITEMS = [
-  { icon: <MessageSquare size={22} />, label: 'Chat', active: true, badge: 2 },
-  { icon: <Compass size={22} />, label: 'Discover', active: false },
-  { icon: <Bot size={22} />, label: 'Market', active: false },
-  { icon: <Heart size={22} />, label: 'Favorites', active: false },
+const RAIL_ITEMS: { id: RailItem; icon: any; label: string; badge?: number }[] = [
+  { id: 'chat', icon: <MessageSquare size={22} />, label: 'Chat', badge: 2 },
+  { id: 'discover', icon: <Compass size={22} />, label: 'Discover' },
+  { id: 'market', icon: <Bot size={22} />, label: 'Market' },
+  { id: 'favorites', icon: <Heart size={22} />, label: 'Favorites' },
 ];
 
-export const LeftRail = ({ onToggle }: Props) => {
+export const LeftRail = ({ active, onChange, onToggle }: Props) => {
   return (
     <div
       style={{
@@ -38,8 +41,9 @@ export const LeftRail = ({ onToggle }: Props) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 8px 16px rgba(59, 130, 246, 0.2)'
-          }}>
+              boxShadow: '0 8px 16px rgba(59, 130, 246, 0.2)',
+              cursor: 'pointer'
+          }} onClick={() => onChange('chat')}>
               <Sparkles size={24} color="#fff" />
           </div>
       </div>
@@ -47,8 +51,9 @@ export const LeftRail = ({ onToggle }: Props) => {
       <Divider style={{ margin: '4px 20px', minWidth: 'auto', width: 32 }} />
 
       {RAIL_ITEMS.map((item) => (
-        <Tooltip key={item.label} title={item.label} placement="right">
+        <Tooltip key={item.id} title={item.label} placement="right">
           <div
+            onClick={() => onChange(item.id)}
             style={{
               width: 48,
               height: 48,
@@ -56,9 +61,9 @@ export const LeftRail = ({ onToggle }: Props) => {
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: 16,
-              cursor: item.active ? 'pointer' : 'not-allowed',
-              color: item.active ? '#3b82f6' : '#9ca3af',
-              background: item.active ? '#eff6ff' : 'transparent',
+              cursor: 'pointer',
+              color: active === item.id ? '#3b82f6' : '#9ca3af',
+              background: active === item.id ? '#eff6ff' : 'transparent',
               transition: 'all 0.2s',
               position: 'relative'
             }}
@@ -68,6 +73,9 @@ export const LeftRail = ({ onToggle }: Props) => {
                     {item.icon}
                 </Badge>
             ) : item.icon}
+            {active === item.id && (
+                <div style={{ position: 'absolute', left: -20, width: 4, height: 20, background: '#3b82f6', borderRadius: '0 4px 4px 0' }} />
+            )}
           </div>
         </Tooltip>
       ))}

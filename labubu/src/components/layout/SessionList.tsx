@@ -1,5 +1,6 @@
 import { Button, Tooltip, Input } from 'antd';
-import { SquarePen, MessageSquare, Search } from 'lucide-react';
+import { SquarePen, MessageSquare, Search, Users } from 'lucide-react';
+import { GroupAvatar } from '@lobehub/ui';
 import { type ChatSession } from '../../types';
 
 interface Props {
@@ -83,9 +84,17 @@ export const SessionList = ({ sessions, activeId, onSelect, onCreate, collapsed 
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                transition: 'all 0.2s'
+                transition: 'all 0.2s',
+                overflow: 'hidden'
               }}>
-                <MessageSquare size={18} style={{ color: session.id === activeId ? '#fff' : '#4b5563' }} />
+                {session.type === 'group' ? (
+                   <GroupAvatar
+                    size={32}
+                    avatar={session.avatars as any}
+                   />
+                ) : (
+                    <MessageSquare size={18} style={{ color: session.id === activeId ? '#fff' : '#4b5563' }} />
+                )}
               </div>
               <div style={{ overflow: 'hidden', flex: 1, paddingTop: 2 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
