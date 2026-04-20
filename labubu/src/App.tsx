@@ -22,7 +22,7 @@ const ChatWorkspace = () => {
     updateSessionPreview,
   } = useSessions();
 
-  const { messages, loading, sendMessage, clearMessages, stopGeneration } =
+  const { messages, loading, sendMessage, updateMessage, deleteMessage, clearMessages, stopGeneration } =
     useChat(activeId);
 
   const handleSend = async (text: string) => {
@@ -69,7 +69,11 @@ const ChatWorkspace = () => {
           isLoading={loading}
         />
 
-        <MessageList messages={messages} />
+        <MessageList
+            messages={messages}
+            onMessageChange={updateMessage}
+            onDelete={deleteMessage}
+        />
 
         <InputArea onSend={handleSend} loading={loading} />
       </div>
